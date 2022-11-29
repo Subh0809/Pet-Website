@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<!--ng-app directive tells AngularJS that myApp
+    is the root element of the application -->
+<html>
+  <head>
+    <!--import the angularjs libraries-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.7/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.7/angular-route.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+    <link href="style.css" rel="stylesheet" />
+  </head>
+  <body ng-app="myApp" ng-controller="OrderFormController">
+    <!--hg-template indicates the pages 
+            that get loaded as per requirement-->
+    <nav class="{{active}}home">
+      <h1 class="logo">Dog-A-Mart<image src="logo.png" height="60px"/></h1>
+      <a id="navHome" class="home" ng-click="active=''">Home</a>
+      <a id="navItems" class="itemshome" ng-click="active='items'">Shop</a>
+      <a id="navSearch" class="searchhome" ng-click="active='search'">Search</a>
+      <a id="navAbout" class="abouthome" ng-click="active='about'">About Breeds</a>
+      <!-- href="#/second" -->
+    </nav>
+
+    <section style="display: block; position: relative; top: 50px;" type="text/ng-template" id="first.html">
+      <h1 style="background-color: rgba(97, 220, 97, 0.526)">Welcome Dog Lovers,<br />Explore the world of Dogs here with us......</h1>
+      <h3 style="color:antiquewhite; position: relative; top: 30px; background-color: rgba(0, 0, 255, 0.356); ">"QUOTE OF THE DAY"<br/><br/>“The better I get to know men, the more I find myself loving dogs.”  – Charles de Gaulle</h2>
+      <br />
+      <h2 style="color: rgb(241, 235, 235); position: relative; top: 270px; background-color: rgba(0, 0, 0, 0.463);">
+        Contact us : <br />Email: DogWorld@contact.in <br />Mobile: +91
+        9956735673/7002345876
+      </h2>
+    </section>
+    <section style="display: none; position: relative; top: 40px;" type="text/ng-template" id="second.html">
+      <form style="position: relative">
+        <div class="heading">
+          <h3>Items</h3>
+          <div>
+            <button
+              class="list-icon"
+              ng-class="{active: layout == 'list'}"
+              ng-click="layout = 'list'"
+            >
+              LIST
+            </button>
+            <button
+              class="grid-icon"
+              ng-class="{active: layout == 'grid'}"
+              ng-click="layout = 'grid'"
+            >
+              GRID
+            </button>
+          </div>
+        </div>
+        <div ng-show="layout == 'grid'" class="grid">
+          <ul id="itemul" ng-repeat="service in services">
+            <!-- Loop through the services array, assign a click handler, and set or
+                    remove the "active" css class if needed -->
+            <li
+              ng-click="toggleActive(service)"
+              ng-class="{active:service.active}"
+            >
+              <!-- Notice the use of the currency filter, it will format the price -->
+              <h4 id="item">{{service.name}}</h4>
+              <span>{{service.price | currency}}</span>
+            </li>
+            <div style="position: relative">
+              <button id="editBtn">EDIT</button>
+              <input id="input" style="display: none" type="text" />
+            </div>
+          </ul>
+        </div>
+
+        <ul
+          ng-show="layout == 'list'"
+          class="list"
+          id="itemul"
+          ng-repeat="service in services"
+        >
+          <!-- Loop through the services array, assign a click handler, and set or
+                      remove the "active" css class if needed -->
+          <li
+            ng-click="toggleActive(service)"
+            ng-class="{active:service.active}"
+          >
+            <!-- Notice the use of the currency filter, it will format the price -->
+            <h4 id="item">{{service.name}}</h4>
+            <span>{{service.price | currency}}</span>
+          </li>
+          <div style="position: relative">
+            <button id="editBtn">EDIT</button>
+            <input id="input" style="display: none" type="text" />
+          </div>
+        </ul>
+
+        <div class="total">
+          <!-- Calculate the total price of all chosen services. Format it as currency. -->
+          Total: <span>{{total() | currency}}</span>
+        </div>
+      </form>
+    </section>
+    <section style="display: none; position: relative; top: 60px;" type="text/ng-template" id="third.html">
+      <div>
+        <div class="bar">
+          <input
+            type="text"
+            ng-model="searchString"
+            placeholder="Enter your search terms"
+          />
+        </div>
+
+        <ul>
+          <li ng-repeat="i in items | searchFor:searchString">
+            <a href="{{i.url}}">
+            <p>{{i.title}}</p></a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section style="display: none" type="text/ng-template" id="fourth.html">
+      <form style="position: relative; top:40px"> 
+        <h1>Breeds Available</h1><br/>
+        <a href="https://www.rover.com/blog/golden-retriever-puppies-everything-you-need-to-know/#:~:text=Goldens%20make%20a%20wonderful%20family,left%20alone%20for%20long%20hours.&text=Golden%20retrievers%20shed%20moderately%20on,only%20occasionally%20need%20a%20bath."><image src="golden.jpg" height=120px /><h2>Golden Retriever</h2></a><br/>
+        <a href="https://www.rover.com/blog/labrador-retriever-puppies-everything-you-need-to-know/#:~:text=With%20a%20strong%20build%20and,%2C%20chocolate%2C%20or%20black%20varieties.&text=Labs%20were%20born%20to%20have%20fun."><image src="lab.webp" height=140px /><h2>Labrador</h2></a><br/>
+        <a href="https://www.hillspet.com/dog-care/dog-breeds/pug#:~:text=Pugs%20can%20be%20stubborn%20but,and%20can%20be%20quite%20affectionate."><image src="pug.jpg" height=100px /><h2>Pug</h2></a><br/>
+        <a href="https://www.hillspet.com/dog-care/dog-breeds/siberian-husky#:~:text=Siberian%20huskies%20are%20classic%20northern,for%20their%20guardians%20at%20times."><image src="husky.jpg" height=120px /><h2>Siberian Husky</h2></a><br/>
+        <a href="https://www.hillspet.com/dog-care/dog-breeds/pomeranian#:~:text=Pomeranians%20are%20easily%20recognized%20by,the%20snows%20of%20northern%20Germany."><image src="pom.jpg" height=100px /><h2>Pomeranian</h2></a>
+       
+    </form>
+    </section>
+
+    <div ng-view></div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
